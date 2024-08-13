@@ -32,35 +32,33 @@ const Login = () => {
     <div className="login">
     <div className="card">
       <div className="left">
-        <h1>Hello World.</h1>
+        <h1>Share Vista</h1>
         <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero cum,
-          alias totam numquam ipsa exercitationem dignissimos, error nam,
-          consequatur.
+        Connectez-vous pour partager vos idées, suivre vos amis et découvrir de nouvelles perspectives. 
         </p>
-        <span>Don't you have an account?</span>
+        <span>Pas encore inscrit ? Créez un compte pour commencer à explorer.</span>
         <Link to="/register">
-          <button>Register</button>
+          <button>S'inscrire</button>
         </Link>
       </div>
       <div className="right">
-        <h1>Login</h1>
+        <h1>Connexion</h1>
         <form>
           <input
             type="text"
-            placeholder="Username"
+            placeholder="Pseudo"
             name="username"
             onChange={handleChange}
           />
           <input
             type="password"
-            placeholder="Password"
+            placeholder="Mot de passe"
             name="password"
             onChange={handleChange}
           />
           {err && err}
-          <button onClick={handleLogin}>Login</button>
-        </form>
+          <button onClick={handleLogin} style={{ width: "200px" }}>Se connecter</button>
+          </form>
       </div>
     </div>
   </div>

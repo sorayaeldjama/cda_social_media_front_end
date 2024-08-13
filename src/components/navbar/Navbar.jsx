@@ -11,16 +11,32 @@ import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { DarkModeContext } from "../../context/darkModeContext";
 import { AuthContext } from "../../context/authContext";
+import { makeRequest } from "../../axios";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import {  useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const { toggle, darkMode } = useContext(DarkModeContext);
   const { currentUser } = useContext(AuthContext);
+  const queryClient = useQueryClient();
 
+  const navigate = useNavigate()
+
+  const { logout } = useContext(AuthContext);
+
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    try {
+      await logout();
+      navigate("/login")
+    } catch (err) {
+    }
+  };
   return (
     <div className="navbar">
       <div className="left">
         <Link to="/" style={{ textDecoration: "none" }}>
-          <span>lamasocial</span>
+          <span>Share vista</span>
         </Link>
         <HomeOutlinedIcon />
         {darkMode ? (
@@ -38,9 +54,10 @@ const Navbar = () => {
         <PersonOutlinedIcon />
         <EmailOutlinedIcon />
         <NotificationsOutlinedIcon />
+          <button onClick={handleLogout}>Se deconnecter</button>
         <div className="user">
           <img
-            src={currentUser.profilePic}
+            src={currentUser.profilePicture}
             alt=""
           />
           <span>{currentUser.name}</span>

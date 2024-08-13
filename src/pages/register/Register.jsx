@@ -30,7 +30,7 @@ const Register = () => {
     <div className="register">
       <div className="card">
         <div className="left">
-          <h1>Lama Social.</h1>
+          <h1>Share Vista</h1>
           <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero cum,
             alias totam numquam ipsa exercitationem dignissimos, error nam,
@@ -38,15 +38,15 @@ const Register = () => {
           </p>
           <span>Do you have an account?</span>
           <Link to="/login">
-          <button>Login</button>
+          <button>Se connecter</button>
           </Link>
         </div>
         <div className="right">
-          <h1>Register</h1>
+          <h1>Inscription</h1>
           <form>
           <input
               type="text"
-              placeholder="Username"
+              placeholder="Pseudo"
               name="username"
               onChange={handleChange}
             />
@@ -58,18 +58,18 @@ const Register = () => {
             />
             <input
               type="password"
-              placeholder="Password"
+              placeholder="Mot de passe"
               name="password"
               onChange={handleChange}
             />
             <input
               type="text"
-              placeholder="Name"
+              placeholder="Nom complet"
               name="name"
               onChange={handleChange}
             />
             {err && err}
-            <button onClick={handleClick}>Register</button>
+            <button onClick={handleClick}>S'inscrire</button>
           </form>
         </div>
       </div>
