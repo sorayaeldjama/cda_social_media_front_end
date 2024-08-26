@@ -34,7 +34,6 @@ import { DarkModeContext } from "../../context/darkModeContext.js";
 
 const Post = ({ post }) => {
   const { darkMode } = useContext(DarkModeContext);
-
   const [commentOpen, setCommentOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -50,8 +49,10 @@ const Post = ({ post }) => {
     }
   );
 
+  const isLiked = data && data.includes(currentUser.id);
+
   const mutation = useMutation(
-    () => toggleLike(post.id, currentUser.id, data && data.includes(currentUser.id)),
+    () => toggleLike(post.id, currentUser.id, isLiked),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(["likes", post.id]);
@@ -103,9 +104,12 @@ const Post = ({ post }) => {
       <CardContent>
         <div className="post-header">
           <div className="user-info">
+          <Link to={`/profile/${post.userId}`} style={{ textDecoration: "none", color: "inherit" }}>
+
             <Avatar className="avatar" sx={{ bgcolor: "primary.main" }}>
               {avatarLetter}
             </Avatar>
+            </Link>
             <div className="details">
               <Link to={`/profile/${post.userId}`} style={{ textDecoration: "none", color: "inherit" }}>
                 <Typography variant="h6" className="username">{post.name}</Typography>
@@ -139,13 +143,13 @@ const Post = ({ post }) => {
         >
           <IconButton
             onClick={handleLike}
-            className={`like-button ${data && data.includes(currentUser.id) ? 'liked' : ''}`}
+            className={`like-button ${isLiked ? 'liked' : ''}`}
             disabled={isLoading}
-            color={data && data.includes(currentUser.id) ? 'error' : 'default'}
+            color={isLiked ? 'error' : 'default'}
           >
             {isLoading ? (
               "Loading..."
-            ) : data && data.includes(currentUser.id) ? (
+            ) : isLiked ? (
               <Favorite />
             ) : (
               <FavoriteBorder />
@@ -179,7 +183,6 @@ const Post = ({ post }) => {
           </Button>
           <Button onClick={() => handleCloseDialog(true)} color="primary" autoFocus>
             Delete
-            
           </Button>
         </DialogActions>
       </Dialog>

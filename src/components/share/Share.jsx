@@ -64,9 +64,12 @@ const Share = () => {
       <div className="container">
         <div className="top">
           <div className="left">
+          {/* <Link to={`/profile/${post.userId}`} style={{ textDecoration: "none", color: "inherit" }}> */}
+
             <div className="profile-icon">
               {currentUser.name.charAt(0).toUpperCase()}
             </div>
+            {/* </Link> */}
             <Typography variant="h6" className="placeholder">
               {`Quoi de neuf, ${currentUser.name}?`}
             </Typography>

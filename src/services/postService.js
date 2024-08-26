@@ -21,17 +21,15 @@ export const deletePost = (postId) => {
 
 
 // Fonction pour obtenir les posts
+
 export const getPosts = async (userId) => {
-    console.log(`Fetching posts for userId: ${userId}`);
-    try {
-      const response = await makeRequest.get("/posts", {
-        params: { userId },
-      });
-      console.log("API Response:", response.data);
-      return response.data;
-    } catch (error) {
-      console.error("Error fetching posts:", error);
-      throw error;
-    }
-  };
-  
+  try {
+    const response = await makeRequest.get("/posts", {
+      params: { userId },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Erreur lors de la récupération des posts:", error);
+    throw error;
+  }
+};

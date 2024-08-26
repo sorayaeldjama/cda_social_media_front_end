@@ -1,9 +1,10 @@
-import { useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import "./comments.scss";
 import { AuthContext } from "../../context/authContext";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getComments, addComment } from "../../services/commentService"; // Importer les services
 import moment from "moment";
+import { Avatar } from "@mui/material";
 
 const Comments = ({ postId }) => {
   const { currentUser } = useContext(AuthContext); // Contexte pour obtenir les informations de l'utilisateur actuel
@@ -42,24 +43,6 @@ const Comments = ({ postId }) => {
 
   return (
     <div className="comments">
-      <div className="write">
-        {/* Afficher l'image de profil de l'utilisateur actuel */}
-        <img src={`/upload/${currentUser.profilePicture}`} alt="Profile" />
-        
-        {/* Champ de saisie pour le commentaire */}
-        <input
-          type="text"
-          placeholder="Write a comment"
-          value={description}
-          onChange={(e) => setDesc(e.target.value)} // Mettre à jour l'état de la description
-        />
-        
-        {/* Bouton pour envoyer le commentaire */}
-        <button onClick={handleClick} disabled={mutation.isLoading}>
-          {mutation.isLoading ? "Sending..." : "Send"} {/* Afficher un texte différent selon l'état de chargement */}
-        </button>
-      </div>
-      
       {/* Affichage des commentaires */}
       {error
         ? "Something went wrong" // Message d'erreur si quelque chose se passe mal
@@ -67,21 +50,37 @@ const Comments = ({ postId }) => {
         ? "Loading..." // Message de chargement pendant la récupération des données
         : data.map((comment) => (
             <div className="comment" key={comment.id}>
-              {/* Afficher une icône avec les initiales de l'auteur du commentaire */}
-              <div className="profile-icon">
-                {getInitials(comment.name)}
+              <div className="avatar">
+                {/* Afficher une icône avec les initiales de l'auteur du commentaire */}
+                <Avatar className="avatar">
+                  {getInitials(comment.name)}
+                </Avatar>
               </div>
-              
               <div className="info">
-                <span>{comment.name}</span> {/* Nom de l'auteur */}
-                <p>{comment.description}</p> {/* Description du commentaire */}
+                {/* Description du commentaire */}
+                <p>{comment.description}</p>
               </div>
-              
               <span className="date">
                 {moment(comment.created_at).fromNow()} {/* Date du commentaire relative au moment présent */}
               </span>
             </div>
           ))}
+
+      {/* Conteneur pour écrire un nouveau commentaire */}
+      <div className="write">
+        <Avatar className="avatar">
+          {currentUser ? getInitials(currentUser.name) : ""}
+        </Avatar>
+        <input
+          type="text"
+          placeholder="Write a comment"
+          value={description}
+          onChange={(e) => setDesc(e.target.value)} // Mettre à jour l'état de la description
+        />
+        <button onClick={handleClick} disabled={mutation.isLoading}>
+          {mutation.isLoading ? "Sending..." : "Send"} {/* Afficher un texte différent selon l'état de chargement */}
+        </button>
+      </div>
     </div>
   );
 };

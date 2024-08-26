@@ -12,6 +12,7 @@ import Footer from "./components/footer/Footer";
 import { DarkModeContext } from "./context/darkModeContext";
 import { AuthContext } from "./context/authContext";
 import AboutUs from "./pages/aboutUs/AboutUs";
+import Contact from"../src/pages/contact/Contact"
 import "./style.scss";
 
 // Créez une instance de QueryClient en dehors du composant App
@@ -56,11 +57,14 @@ const router = createBrowserRouter([
     children: [
       { path: "/", element: <Home /> },
       { path: "/profile/:id", element: <Profile /> },
+      { path: "/about-us", element: <AboutUs /> },
+      {path:"/contact",element:<Contact></Contact>}
     ],
   },
-  { path: "/login", element: <Login /> },
-  { path: "/register", element: <Register /> },
-  { path: "/about-us", element: <AboutUs /> },
+  
+    { path: "/login", element: <Login /> },
+    { path: "/register", element: <Register /> },
+  
 ]);
 
 function App() {
