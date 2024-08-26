@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import axios from "axios";
+import { login as loginService, logout as logoutService } from "../services/authService"; // Importer les services d'authentification
 
 export const AuthContext = createContext();
 
@@ -9,25 +9,29 @@ export const AuthContextProvider = ({ children }) => {
   );
 
   const login = async (inputs) => {
-    const res = await axios.post("http://localhost:8900/api/auth/login", inputs, {
-      withCredentials: true,
-    });
-
-    setCurrentUser(res.data)
+    try {
+      const userData = await loginService(inputs); // Utiliser le service login
+      setCurrentUser(userData);
+    } catch (error) {
+      console.error("Erreur lors de la connexion :", error);
+    }
   };
+
   const logout = async () => {
-    const res = await axios.post("http://localhost:8900/api/auth/logout",  {
-      
-    });
-
-    setCurrentUser(res.data)
+    try {
+      await logoutService(); // Utiliser le service logout
+      setCurrentUser(null);
+    } catch (error) {
+      console.error("Erreur lors de la déconnexion :", error);
+    }
   };
+
   useEffect(() => {
     localStorage.setItem("user", JSON.stringify(currentUser));
   }, [currentUser]);
 
   return (
-    <AuthContext.Provider value={{ currentUser, login,logout }}>
+    <AuthContext.Provider value={{ currentUser, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

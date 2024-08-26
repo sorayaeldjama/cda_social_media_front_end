@@ -1,101 +1,60 @@
-@import "../../style.scss";
-
 .rightBar {
-  @include themify($themes) {
-    flex: 3;
-    position: sticky;
-    top: 70px;
-    height: calc(100vh - 70px);
-    overflow: scroll;
-    background-color: themed("bgSoft");
+  width: 100%;
+  max-width: 350px; // Largeur maximale
+  padding: 20px;
+  background-color: #f9f9f9; // Couleur de fond du RightBar
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 56px;
+  .container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
 
-    @include mobile{
-      display: none;
-    }
-    @include tablet{
-      display: none;
-    }
+  .item {
+    .user {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+      
+      &:hover {
+        background-color: #f0f0f0; // Couleur de survol
+      }
+      
+      .userInfo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
 
-    &::-webkit-scrollbar {
-      display: none;
-    }
-
-    .container {
-      padding: 20px;
-
-      .item {
-        -webkit-box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.09);
-        -moz-box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.09);
-        box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.09);
-        padding: 20px;
-        margin-bottom: 20px;
-        background-color: themed("bg");
-
-        span {
-          color: gray;
-        }
-
-        .user {
+        .profile-icon {
+          width: 40px;
+          height: 40px;
           display: flex;
           align-items: center;
-          justify-content: space-between;
-          margin: 20px 0px;
+          justify-content: center;
+          background-color: #673ab7; // Couleur violette
+          color: #fff;
+          border-radius: 50%;
+          font-size: 18px;
+        }
+      }
 
-          .userInfo {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            position: relative;
-
-            img {
-              width: 40px;
-              height: 40px;
-              border-radius: 50%;
-              object-fit: cover;
-            }
-
-            .online {
-              width: 12px;
-              height: 12px;
-              border-radius: 50%;
-              background-color: limegreen;
-              position: absolute;
-              top: 0;
-              left: 30px;
-            }
-
-            p {
-              color: themed("textColorSoft");
-            }
-
-            span {
-              font-weight: 500;
-              color: themed("textColor");
-            }
-          }
-
-          .buttons {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-
-            button {
-              border: none;
-              padding: 5px;
-              color: white;
-              cursor: pointer;
-
-              &:first-child {
-                background-color: #5271ff;
-              }
-
-              &:last-child {
-                background-color: #f0544f;
-              }
-            }
-          }
+      .buttons {
+        .MuiButton-root {
+          font-size: 0.875rem; // Ajuste la taille du texte des boutons
         }
       }
     }
+  }
+
+  // Responsive Design
+  @media (max-width: 600px) {
+    max-width: 100%;
+    padding: 10px;
   }
 }

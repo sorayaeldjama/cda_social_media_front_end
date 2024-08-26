@@ -1,72 +1,80 @@
-@import "../../style.scss";
-
 .post {
-  @include themify($themes) {
-    -webkit-box-shadow: 0px 0px 25px -10px rgba(0, 0, 0, 0.38);
-    -moz-box-shadow: 0px 0px 25px -10px rgba(0, 0, 0, 0.38);
-    box-shadow: 0px 0px 25px -10px rgba(0, 0, 0, 0.38);
-    border-radius: 20px;
-    background-color: themed("bg");
-    color: themed("textColor");
+  margin-bottom: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 
-    .container {
-      padding: 20px;
+  .post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
 
-      .user {
+    .user-info {
+      display: flex;
+      align-items: center;
+
+      .avatar {
+        width: 40px;
+        height: 40px;
+        margin-right: 10px;
+      }
+
+      .details {
         display: flex;
-        align-items: center;
-        justify-content: space-between;
+        flex-direction: column;
 
-        .userInfo {
-          display: flex;
-          gap: 20px;
-
-          img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-          }
-
-          .details {
-            display: flex;
-            flex-direction: column;
-
-            .name {
-              font-weight: 500;
-            }
-
-            .date {
-              font-size: 12px;
-            }
-          }
+        .username {
+          font-weight: bold;
+          color: #333;
         }
       }
+    }
 
-      .content {
-        margin: 20px 0px;
+    .more-options {
+      position: relative;
+    }
+  }
 
-        img {
-          width: 100%;
-          max-height: 500px;
-          object-fit: cover;
-          margin-top: 20px;
-        }
+  .post-content {
+    margin: 15px 0;
+    color: #555;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  .post-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-top: 10px;
+    object-fit: cover;
+  }
+
+  .MuiCardActions-root {
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+
+    .like-button {
+      &.liked {
+        color: #e91e63;
       }
+    }
+  }
+}
 
-      .info {
-        display: flex;
-        align-items: center;
-        gap: 20px;
+@media (max-width: 600px) {
+  .post {
+    .post-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
 
-        .item {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          cursor: pointer;
-          font-size: 14px;
-        }
-      }
+    .MuiCardActions-root {
+      flex-direction: column;
+      align-items: flex-start;
     }
   }
 }

@@ -1,79 +1,89 @@
-@import "../../style.scss";
-
 .share {
-  @include themify($themes) {
-    -webkit-box-shadow: 0px 0px 25px -10px rgba(0, 0, 0, 0.38);
-    -moz-box-shadow: 0px 0px 25px -10px rgba(0, 0, 0, 0.38);
-    box-shadow: 0px 0px 25px -10px rgba(0, 0, 0, 0.38);
-    border-radius: 20px;
-    background-color: themed("bg");
-    color: themed("textColor");
-    margin-bottom: 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: #ffffff;
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 600px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-top: 50px;
 
-    .container {
-      padding: 20px;
-      .top {
+  .container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .left {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      margin-right: 10px;
+
+      .profile-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: #6a1b9a; // Violet Principal
+        color: #ffffff;
         display: flex;
         align-items: center;
-        gap: 20px;
-        img {
-          width: 40px;
-          height: 40px;
-          border-radius: 50%;
-          object-fit: cover;
-        }
-
-        input {
-          border: none;
-          outline: none;
-          padding: 20px 10px;
-          background-color: transparent;
-          width: 60%;
-          color: themed("textColor");
-        }
+        justify-content: center;
+        font-size: 24px;
+        font-weight: bold;
+        margin-right: 10px;
       }
 
-      hr {
-        margin: 20px 0px;
+      .description-input {
+        width: 100%;
         border: none;
-        height: 0.5px;
-        background-color: themed("border");
+        outline: none;
+        padding: 10px;
+        border-radius: 8px;
+        background-color: #f5f5f5;
+        font-size: 16px;
+      }
+    }
+
+    .right {
+      .preview-image {
+        max-width: 200px;
+        max-height: 150px;
+        border-radius: 8px;
+        object-fit: cover;
+      }
+    }
+  }
+
+  .bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+
+    .left {
+      display: flex;
+      align-items: center;
+
+      input[type="file"] {
+        display: none;
       }
 
-      .bottom {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        .left {
-          display: flex;
-          align-items: center;
-          gap: 20px;
+      label {
+        cursor: pointer;
+      }
+    }
 
-          .item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-
-            img {
-              height: 20px;
-            }
-
-            span {
-              font-size: 12px;
-              color: gray;
-            }
-          }
-        }
-        .right {
-          button {
-            border: none;
-            padding: 5px;
-            color: white;
-            cursor: pointer;
-            background-color: #5271ff;
-            border-radius: 3px;
-          }
+    .right {
+      Button {
+        text-transform: none;
+        background-color: #6a1b9a; // Violet Principal
+        &:hover {
+          background-color: #5a1a8c; // Couleur légèrement plus foncée au survol
         }
       }
     }

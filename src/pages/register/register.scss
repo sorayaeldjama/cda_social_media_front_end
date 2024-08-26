@@ -1,14 +1,15 @@
 .register {
   height: 100vh;
-  background-color: rgb(193, 190, 255);
+  background-color: #6464b2;
   display: flex;
   align-items: center;
   justify-content: center;
 
   .card {
-    width: 50%;
+    width: 90%; /* Utilise une largeur flexible pour les petits écrans */
+    max-width: 1200px; /* Limite la largeur maximale */
     display: flex;
-    flex-direction: row-reverse;
+    flex-direction: row; /* Disposition en ligne pour les grands écrans */
     background-color: white;
     border-radius: 10px;
     min-height: 600px;
@@ -17,8 +18,7 @@
     .left {
       flex: 1;
       background: linear-gradient(rgba(39, 11, 96, 0.5), rgba(39, 11, 96, 0.5)),
-        url("https://images.pexels.com/photos/4881619/pexels-photo-4881619.jpeg?auto=compress&cs=tinysrgb&w=1600")
-          center;
+      url("https://images.pexels.com/photos/2422286/pexels-photo-2422286.jpeg?auto=compress&cs=tinysrgb&w=1600") center;
       background-size: cover;
       padding: 50px;
       display: flex;
@@ -27,23 +27,20 @@
       color: white;
 
       h1 {
-        font-size: 100px;
-        line-height: 100px;
-      }
-      
-      p {
+        font-size: 4rem; /* Taille de police adaptée pour les petits écrans */
+        line-height: 1.2;
       }
 
       span {
-        font-size: 14px;
+        font-size: 1rem;
       }
-      
+
       button {
         width: 50%;
         padding: 10px;
         border: none;
         background-color: white;
-        color: rebeccapurple;
+        color: rgb(146, 189, 103);
         font-weight: bold;
         cursor: pointer;
       }
@@ -54,34 +51,122 @@
       padding: 50px;
       display: flex;
       flex-direction: column;
-      gap: 50px;
+      gap: 20px; /* Réduit l'écart entre les éléments du formulaire */
       justify-content: center;
 
       h1 {
-      color: #555;
+        color: #555;
       }
-      
+
       form {
         display: flex;
         flex-direction: column;
-        gap: 30px;
-        
-        input {
-        border: none;
-        border-bottom: 1px solid lightgray;
-        padding: 20px 10px;
+        gap: 20px; /* Réduit l'écart entre les éléments du formulaire */
+
+        .input-container {
+          position: relative;
+          margin-bottom: 15px; /* Réduit la marge inférieure */
+
+          input {
+            border: 1px solid lightgray;
+            padding: 10px;
+            width: 100%;
+            border-radius: 5px;
+            box-sizing: border-box; /* Inclut le padding et la bordure dans la largeur totale */
+          }
+
+          &.error input {
+            border-color: red;
+          }
+
+          .error-message {
+            color: red;
+            font-size: 0.875rem;
+            margin-top: 5px; /* Réduit l'espace entre le champ et le message d'erreur */
+            margin-bottom: 0; /* Évite l'espace supplémentaire sous le message d'erreur */
+          }
         }
-        
+
         button {
           width: 50%;
           padding: 10px;
           border: none;
-          background-color: #938eef;
+          background-color: rgb(146, 189, 103);
           color: white;
           font-weight: bold;
           cursor: pointer;
         }
       }
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .card {
+      flex-direction: column; /* Colonne pour les écrans intermédiaires */
+      width: 90%;
+    }
+
+    .left, .right {
+      padding: 30px; /* Réduit le padding pour les écrans intermédiaires */
+    }
+
+    .left {
+      h1 {
+        font-size: 3rem;
+      }
+
+      button {
+        width: 70%;
+      }
+    }
+
+    .right {
+      form {
+        gap: 15px; /* Réduit l'écart entre les éléments du formulaire */
+        
+        .input-container {
+          margin-bottom: 10px; /* Réduit la marge inférieure */
+        }
+
+        button {
+          width: 70%; /* Ajuste la largeur des boutons */
+        }
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    .card {
+      flex-direction: column; /* Colonne pour les petits écrans */
+      width: 95%; /* Utilise une largeur presque complète */
+      min-height: auto; /* Supprime la hauteur minimale pour les petits écrans */
+    }
+
+    .right {
+      display: none; /* Masque la section de droite (formulaire) sur les petits écrans */
+    }
+
+    .left {
+      flex: 1;
+      padding: 20px; /* Réduit le padding pour les petits écrans */
+    }
+
+    .left h1 {
+      font-size: 2.5rem;
+    }
+
+    .left button {
+      width: 80%; /* Ajuste la largeur du bouton */
+    }
+  }
+
+  @media (max-width: 480px) {
+    .left h1 {
+      font-size: 2rem; /* Réduit la taille du texte pour les très petits écrans */
+    }
+
+    .left button {
+      width: 90%; /* Ajuste la largeur du bouton pour les très petits écrans */
     }
   }
 }

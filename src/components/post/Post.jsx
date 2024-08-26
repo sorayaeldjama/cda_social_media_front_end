@@ -1,115 +1,189 @@
-import "./post.scss";
-import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
-import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
-import TextsmsOutlinedIcon from "@mui/icons-material/TextsmsOutlined";
-import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import Comments from "../comments/Comments";
-import { useState } from "react";
 import moment from "moment";
-import { makeRequest } from "../../axios";
-import { AuthContext } from "../../context/authContext";
-import { useContext } from "react";
-
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { AuthContext } from "../../context/authContext";
+import {
+  IconButton,
+  Button,
+  Typography,
+  Avatar,
+  Card,
+  CardContent,
+  CardActions,
+  Menu,
+  MenuItem,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Badge
+} from "@mui/material";
+import {
+  FavoriteBorder,
+  Favorite,
+  Comment,
+  Share,
+  MoreVert
+} from "@mui/icons-material";
+import Comments from "../comments/Comments";
+import { getLikes, toggleLike, deletePost } from "../../services/postService";
+import "./post.scss";
+import { DarkModeContext } from "../../context/darkModeContext.js";
+
 const Post = ({ post }) => {
+  const { darkMode } = useContext(DarkModeContext);
+
   const [commentOpen, setCommentOpen] = useState(false);
-  const { isLoading, error, data } = useQuery(["likes", post.id], () =>
-    makeRequest.get("/likes?likePostsId=" + post.id).then((res) => {
-      return res.data;
-    })
-  );
-  const queryClient = useQueryClient();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const menuRef = useRef(null);
 
   const { currentUser } = useContext(AuthContext);
-  console.log("data de get",data)
-  //TEMPORARY
-  const liked=true; 
+  const queryClient = useQueryClient();
+
+  const { isLoading, data } = useQuery(["likes", post.id], () =>
+    getLikes(post.id),
+    {
+      enabled: !!post.id,
+    }
+  );
+
   const mutation = useMutation(
-    (liked) => {
-      console.log("liked",liked)
-      if (liked) return makeRequest.delete("/likes?likePostsId=" + post.id);
-      return makeRequest.post("/likes", { postId: post.id });
-    },
+    () => toggleLike(post.id, currentUser.id, data && data.includes(currentUser.id)),
     {
       onSuccess: () => {
-        // Invalidate and refetch
-        queryClient.invalidateQueries(["likes"]);
+        queryClient.invalidateQueries(["likes", post.id]);
       },
     }
   );
-  const handleLike = () => {
-    mutation.mutate(data.includes(currentUser.id));
-    console.log("j ai like")
-  };
+
   const deleteMutation = useMutation(
-    (postId) => {
-      return makeRequest.delete("/posts/" + postId);
-    },
+    () => deletePost(post.id),
     {
       onSuccess: () => {
-        // Invalidate and refetch
         queryClient.invalidateQueries(["posts"]);
       },
     }
   );
-  const handleDelete = () => {
-    deleteMutation.mutate(post.id);
+
+  const handleLike = () => {
+    mutation.mutate();
   };
 
+  const handleDelete = () => {
+    setDialogOpen(true);
+  };
+
+  const handleCloseDialog = (confirm) => {
+    setDialogOpen(false);
+    if (confirm) {
+      deleteMutation.mutate();
+    }
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const avatarLetter = post.name ? post.name.charAt(0).toUpperCase() : "";
+
   return (
-    <div className="post">
-      <div className="container">
-        <div className="user">
-          <div className="userInfo">
-            <img src={post.profilePicture} alt="" />
+    <Card className="post">
+      <CardContent>
+        <div className="post-header">
+          <div className="user-info">
+            <Avatar className="avatar" sx={{ bgcolor: "primary.main" }}>
+              {avatarLetter}
+            </Avatar>
             <div className="details">
-              <Link
-                to={`/profile/${post.userId}`}
-                style={{ textDecoration: "none", color: "inherit" }}
-              >
-                <span className="name">{post.name}</span>
+              <Link to={`/profile/${post.userId}`} style={{ textDecoration: "none", color: "inherit" }}>
+                <Typography variant="h6" className="username">{post.name}</Typography>
               </Link>
-              <span className="date">{moment(post.created_at).fromNow()}</span>
+              <Typography variant="caption" color="textSecondary">{moment(post.created_at).fromNow()}</Typography>
             </div>
           </div>
-          <MoreHorizIcon />
+          <div ref={menuRef}>
+            <IconButton onClick={() => setMenuOpen(!menuOpen)}>
+              <MoreVert />
+            </IconButton>
+            <Menu
+              anchorEl={menuRef.current}
+              open={menuOpen}
+              onClose={() => setMenuOpen(false)}
+              PaperProps={{ style: { width: '150px' } }}
+            >
+              {post.userId === currentUser.id && (
+                <MenuItem onClick={handleDelete}>Delete</MenuItem>
+              )}
+            </Menu>
+          </div>
         </div>
-        <div className="content">
-          <p>{post.description}</p>
-          <img src={post.img} alt="" />
-        </div>
-        <div className="content">
-          <p>{post.desc}</p>
-          <img src={"/upload/" + post.img} alt="" />
-        </div>
-        <div className="info">
-          <div className="item">
-          {isLoading ? (
-              "loading"
-            ) : data.includes(currentUser.id) ? (
-              <FavoriteOutlinedIcon
-                style={{ color: "red" }}
-                onClick={handleLike}
-              />
+        <Typography variant="body1" className="post-content">{post.description}</Typography>
+        {post.image && <img src={`/upload/${post.image}`} alt="Post" className="post-image" />}
+      </CardContent>
+      <CardActions>
+        <Badge
+          badgeContent={data?.length || 0}
+          color="primary"
+        >
+          <IconButton
+            onClick={handleLike}
+            className={`like-button ${data && data.includes(currentUser.id) ? 'liked' : ''}`}
+            disabled={isLoading}
+            color={data && data.includes(currentUser.id) ? 'error' : 'default'}
+          >
+            {isLoading ? (
+              "Loading..."
+            ) : data && data.includes(currentUser.id) ? (
+              <Favorite />
             ) : (
-              <FavoriteBorderOutlinedIcon onClick={handleLike} />
+              <FavoriteBorder />
             )}
-                        {data?.length} Likes
-         </div>
-          <div className="item" onClick={() => setCommentOpen(!commentOpen)}>
-            <TextsmsOutlinedIcon />
-            See Comments
-          </div>
-          <div className="item">
-            <ShareOutlinedIcon />
-            Share
-          </div>
-        </div>
-        {commentOpen && <Comments postId={post.id} />}
-      </div>
-    </div>
+          </IconButton>
+        </Badge>
+        <IconButton onClick={() => setCommentOpen(!commentOpen)}>
+          <Comment />
+        </IconButton>
+        <IconButton>
+          <Share />
+        </IconButton>
+      </CardActions>
+      {commentOpen && <Comments postId={post.id} />}
+
+      <Dialog
+        open={dialogOpen}
+        onClose={() => handleCloseDialog(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Confirm Deletion"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to delete this post? This action cannot be undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => handleCloseDialog(false)} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={() => handleCloseDialog(true)} color="primary" autoFocus>
+            Delete
+            
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </Card>
   );
 };
 
