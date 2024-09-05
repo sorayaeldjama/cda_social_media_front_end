@@ -8,6 +8,6 @@
 import axios from "axios";
 
 export const makeRequest = axios.create({
-  baseURL: "https://cda-social-media-back-end.onrender.com",
+  baseURL: "https://cda-social-media-front-end.vercel.app/",
   withCredentials: true,
 });
