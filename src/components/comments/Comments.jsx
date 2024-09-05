@@ -78,7 +78,7 @@ const Comments = ({ postId }) => {
           onChange={(e) => setDesc(e.target.value)} // Mettre à jour l'état de la description
         />
         <button onClick={handleClick} disabled={mutation.isLoading}>
-          {mutation.isLoading ? "Sending..." : "Send"} {/* Afficher un texte différent selon l'état de chargement */}
+          {mutation.isLoading ? "Publication..." : "Commenter"} {/* Afficher un texte différent selon l'état de chargement */}
         </button>
       </div>
     </div>

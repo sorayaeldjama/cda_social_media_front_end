@@ -3,12 +3,16 @@ import { useContext, useState, useRef, useEffect } from "react";
 import { AuthContext } from "../../context/authContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { makeRequest } from "../../axios";
-import { Button, Typography, IconButton } from "@mui/material";
+import { Button, Typography, IconButton, Avatar } from "@mui/material";
 import { PhotoCamera } from "@mui/icons-material";
+import { Link } from "react-router-dom";
 
 const Share = () => {
   const [file, setFile] = useState(null);
   const [description, setDesc] = useState("");
+  const { currentUser } = useContext(AuthContext);
+  const queryClient = useQueryClient();
+  const textAreaRef = useRef(null);
 
   const upload = async () => {
     try {
@@ -21,10 +25,6 @@ const Share = () => {
       console.error("Échec du téléchargement :", err);
     }
   };
-
-  const { currentUser } = useContext(AuthContext);
-  const queryClient = useQueryClient();
-  const textAreaRef = useRef(null);
 
   const mutation = useMutation(
     (newPost) => {
@@ -59,17 +59,28 @@ const Share = () => {
     }
   }, [description]);
 
+  // Construct profile picture URL
+  const profilePicUrl = currentUser.profilePicture
+    ? `/upload/${currentUser.profilePicture}`
+    : "/default-profile-pic.png";
+
   return (
     <div className="share">
       <div className="container">
         <div className="top">
           <div className="left">
-          {/* <Link to={`/profile/${post.userId}`} style={{ textDecoration: "none", color: "inherit" }}> */}
-
-            <div className="profile-icon">
-              {currentUser.name.charAt(0).toUpperCase()}
-            </div>
-            {/* </Link> */}
+            <Link to={`/profile/${currentUser.userId}`} style={{ textDecoration: "none", color: "inherit" }}>
+              <Avatar
+                className="profile-icon"
+                src={profilePicUrl}
+                sx={{ width: 50, height: 50 }}
+                onError={(e) => {
+                  e.target.src = "/default-profile-pic.png";
+                }}
+              >
+                {!currentUser.profilePicture && currentUser.name.charAt(0).toUpperCase()}
+              </Avatar>
+            </Link>
             <Typography variant="h6" className="placeholder">
               {`Quoi de neuf, ${currentUser.name}?`}
             </Typography>

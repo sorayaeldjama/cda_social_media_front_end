@@ -1,4 +1,9 @@
 import "./profile.scss";
+import { useState, useContext } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { makeRequest } from "../../axios";
+import { useLocation } from "react-router-dom";
+import { AuthContext } from "../../context/authContext";
 import FacebookTwoToneIcon from "@mui/icons-material/FacebookTwoTone";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import InstagramIcon from "@mui/icons-material/Instagram";
@@ -9,133 +14,112 @@ import LanguageIcon from "@mui/icons-material/Language";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Posts from "../../components/posts/Posts";
-import { useQuery } from "@tanstack/react-query";
-import { makeRequest } from "../../axios";
-import { useLocation } from "react-router-dom";
-import { useContext } from "react";
-import { AuthContext } from "../../context/authContext";
-import {  useQueryClient, useMutation } from "@tanstack/react-query";
-import { useState } from "react";
 import Update from "../../components/update/Update";
-
+import { Avatar, Button, IconButton, Typography } from "@mui/material";
 
 const Profile = () => {
   const { currentUser } = useContext(AuthContext);
   const [openUpdate, setOpenUpdate] = useState(false);
-
-  console.log("currentuser",currentUser)
   const queryClient = useQueryClient();
-
   const userId = parseInt(useLocation().pathname.split("/")[2]);
-  console.log("userId", userId);
 
-  const { isLoading, error, data } = useQuery(["user"], () =>
-    makeRequest.get("/users/find/" + userId).then((res) => {
-      console.log("API response:profile", res.data);
-      return res.data;
-    })
+  const { isLoading, data } = useQuery(["user"], () =>
+    makeRequest.get(`/users/find/${userId}`).then((res) => res.data)
   );
+
   const mutation = useMutation(
     (following) => {
       if (following)
-        return makeRequest.delete("/relationships?userId=" + userId);
+        return makeRequest.delete(`/relationships?userId=${userId}`);
       return makeRequest.post("/relationships", { userId });
     },
     {
       onSuccess: () => {
-        // Invalidate and refetch
         queryClient.invalidateQueries(["relationship"]);
       },
     }
   );
-  
-    const { isLoading: rIsLoading, data: relationshipData } = useQuery(
-      ["relationship"],
-      () =>
-        makeRequest.get("/relationships?followedUserId=" + userId).then((res) => {
-          return res.data;
-        })
-    );
-    
+
+  const { isLoading: rIsLoading, data: relationshipData } = useQuery(
+    ["relationship"],
+    () =>
+      makeRequest.get(`/relationships?followedUserId=${userId}`).then((res) => res.data)
+  );
+
   const handleFollow = () => {
-    console.log("bonjour je suis dans le handleclicks ")
-    mutation.mutate(relationshipData.includes(currentUser.id));
+    mutation.mutate(relationshipData?.includes(currentUser?.id));
   };
 
   return (
     <div className="profile">
       {isLoading ? (
-        "loading"
+        <Typography>Loading...</Typography>
       ) : (
         <>
-          <div className="images">
-            <img
-              src={"upload/"+data.coverPicture}
-              alt=""
-              className="cover"
+          <div className="profileHeader">
+            <Avatar
+              src={data?.profilePicture ? `/upload/${data.profilePicture}` : "/default-profile.jpg"}
+              alt={data?.name}
+              sx={{ width: 100, height: 100, margin: "20px" }}
             />
-            <img
-              src={"upload/"+data.profilePicture}
-              alt=""
-              className="profilePic"
-            />
-          </div>
-          <div className="profileContainer">
-            <div className="uInfo">
-              <div className="left">
-                <a href="http://facebook.com">
-                  <FacebookTwoToneIcon fontSize="large" />
-                </a>
-                <a href="http://facebook.com">
-                  <InstagramIcon fontSize="large" />
-                </a>
-                <a href="http://facebook.com">
-                  <TwitterIcon fontSize="large" />
-                </a>
-                <a href="http://facebook.com">
-                  <LinkedInIcon fontSize="large" />
-                </a>
-                <a href="http://facebook.com">
-                  <PinterestIcon fontSize="large" />
-                </a>
-              </div>
-              <div className="center">
-                <span>{data?.name}</span>
-                <div className="info">
-                  <div className="item">
-                    <PlaceIcon />
-                    <span>{data.city}</span>
-                  </div>
-                  <div className="item">
-                    <LanguageIcon />
-                    <span>{data?.username}</span>
-                  </div>
+            <div className="profileDetails">
+              <Typography variant="h4">{data?.name}</Typography>
+              <div className="info">
+                <div className="item">
+                  <PlaceIcon />
+                  <Typography>{data?.city}</Typography>
                 </div>
-                {rIsLoading ? (
-                  "loading"
-                ) : userId === currentUser.id ? (
-                  <button onClick={() =>{   console.log("Opening update...");
-                    setOpenUpdate(true)}}>update</button>
+                <div className="item">
+                  <LanguageIcon />
+                  <Typography>{data?.username}</Typography>
+                </div>
+              </div>
+              {rIsLoading ? (
+                <Typography>Loading...</Typography>
+              ) : currentUser ? (
+                userId === currentUser.id ? (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => setOpenUpdate(true)}
+                  >
+                    Update
+                  </Button>
                 ) : (
-                  <button onClick={handleFollow}>
-                    {relationshipData.includes(currentUser.id)
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={handleFollow}
+                  >
+                    {relationshipData?.includes(currentUser.id)
                       ? "Following"
                       : "Follow"}
-                  </button>
-                )}
-              </div>
-              <div className="right">
-                <EmailOutlinedIcon />
-                <MoreVertIcon />
-              </div>
+                  </Button>
+                )
+              ) : null}
             </div>
-            <Posts userId={userId} />
           </div>
+          <div className="socialLinks">
+            <IconButton href="http://facebook.com" target="_blank" rel="noopener noreferrer">
+              <FacebookTwoToneIcon fontSize="large" />
+            </IconButton>
+            <IconButton href="http://instagram.com" target="_blank" rel="noopener noreferrer">
+              <InstagramIcon fontSize="large" />
+            </IconButton>
+            <IconButton href="http://twitter.com" target="_blank" rel="noopener noreferrer">
+              <TwitterIcon fontSize="large" />
+            </IconButton>
+            <IconButton href="http://linkedin.com" target="_blank" rel="noopener noreferrer">
+              <LinkedInIcon fontSize="large" />
+            </IconButton>
+            <IconButton href="http://pinterest.com" target="_blank" rel="noopener noreferrer">
+              <PinterestIcon fontSize="large" />
+            </IconButton>
+          </div>
+          <Posts userId={userId} />
         </>
       )}
-            {openUpdate && <Update setOpenUpdate={setOpenUpdate} user={data} />}
-
-
+      {openUpdate && <Update setOpenUpdate={setOpenUpdate} user={data} />}
     </div>
   );
 };

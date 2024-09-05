@@ -43,16 +43,16 @@ const Navbar = () => {
         </IconButton>
       </div>
       <div className="right">
-        <Link to="/about" style={{ textDecoration: "none", marginRight: 16 }}>
+        {/* <Link to="/about" style={{ textDecoration: "none", marginRight: 16 }}>
           <Button variant="text" color="inherit">
             About
           </Button>
-        </Link>
-        <Link to="/contact" style={{ textDecoration: "none", marginRight: 16 }}>
+        </Link> */}
+        {/* <Link to="/contact" style={{ textDecoration: "none", marginRight: 16 }}>
           <Button variant="text" color="inherit">
             Contact
           </Button>
-        </Link>
+        </Link> */}
         <Button variant="contained" onClick={handleLogout}>
           Se déconnecter
         </Button>

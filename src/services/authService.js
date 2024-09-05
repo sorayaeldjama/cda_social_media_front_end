@@ -22,3 +22,15 @@ export const logout = async () => {
     throw error;
   }
 };
+// frontend/services/authService.js
+
+export const verifyToken = async () => {
+  try {
+    await makeRequest.get('/api/verifytoken');
+    return true;
+  } catch (error) {
+    console.error('Token invalide ou expiré', error);
+    return false;
+  }
+};
+

@@ -24,7 +24,7 @@ import {
   FavoriteBorder,
   Favorite,
   Comment,
-  Share,
+  Share as ShareIcon,
   MoreVert
 } from "@mui/icons-material";
 import Comments from "../comments/Comments";
@@ -85,6 +85,9 @@ const Post = ({ post }) => {
   };
 
   useEffect(() => {
+    console.log("Post Data in Post:", post);
+    console.log("Profile Picture URL in Post:", post.profilePicture);
+
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setMenuOpen(false);
@@ -95,20 +98,23 @@ const Post = ({ post }) => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [post]);
 
   const avatarLetter = post.name ? post.name.charAt(0).toUpperCase() : "";
 
   return (
-    <Card className="post">
+    <Card className="post" style={{ backgroundColor: darkMode ? "#333" : "#fff" }}>
       <CardContent>
         <div className="post-header">
           <div className="user-info">
-          <Link to={`/profile/${post.userId}`} style={{ textDecoration: "none", color: "inherit" }}>
-
-            <Avatar className="avatar" sx={{ bgcolor: "primary.main" }}>
-              {avatarLetter}
-            </Avatar>
+            <Link to={`/profile/${post.userId}`} style={{ textDecoration: "none", color: "inherit" }}>
+              <Avatar
+                className="avatar"
+                src={post.profilePicture ? `/upload/${post.profilePicture}` : ""}
+                sx={{ bgcolor: post.profilePicture ? "transparent" : "primary.main" }}
+              >
+                {!post.profilePicture && avatarLetter}
+              </Avatar>
             </Link>
             <div className="details">
               <Link to={`/profile/${post.userId}`} style={{ textDecoration: "none", color: "inherit" }}>
@@ -128,7 +134,7 @@ const Post = ({ post }) => {
               PaperProps={{ style: { width: '150px' } }}
             >
               {post.userId === currentUser.id && (
-                <MenuItem onClick={handleDelete}>Delete</MenuItem>
+                <MenuItem onClick={handleDelete}>Supprimer</MenuItem>
               )}
             </Menu>
           </div>
@@ -159,12 +165,11 @@ const Post = ({ post }) => {
         <IconButton onClick={() => setCommentOpen(!commentOpen)}>
           <Comment />
         </IconButton>
-        <IconButton>
-          <Share />
-        </IconButton>
+        {/* <IconButton>
+          <ShareIcon />
+        </IconButton> */}
       </CardActions>
       {commentOpen && <Comments postId={post.id} />}
-
       <Dialog
         open={dialogOpen}
         onClose={() => handleCloseDialog(false)}
@@ -179,10 +184,10 @@ const Post = ({ post }) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => handleCloseDialog(false)} color="primary">
-            Cancel
+            Annuler
           </Button>
           <Button onClick={() => handleCloseDialog(true)} color="primary" autoFocus>
-            Delete
+            Supprimer
           </Button>
         </DialogActions>
       </Dialog>
