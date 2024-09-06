@@ -57,7 +57,7 @@ const Register = () => {
     }
     try {
       // Envoi des données d'inscription à l'API avec l'en-tête Content-Type spécifiant que les données sont au format JSON
-      await makeRequest.post("auth/register", inputs, {
+      await makeRequest.post("api/auth/register", inputs, {
         headers: {
           'Content-Type': 'application/json', // Définit le type de contenu comme JSON
         },
