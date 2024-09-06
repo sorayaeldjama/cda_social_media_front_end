@@ -6,8 +6,6 @@ export const makeRequest = axios.create({
 });
 
 
-
-
 // import axios from "axios";
 
 // export const makeRequest = axios.create({
