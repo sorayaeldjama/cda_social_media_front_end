@@ -8,7 +8,7 @@ const Posts = ({ userId }) => {
   const { darkMode } = useContext(DarkModeContext);
 
   const { isLoading, error, data } = useQuery(["posts"], () =>
-    makeRequest.get("/posts?userId=" + userId).then((res) => res.data)
+    makeRequest.get("api/posts?userId=" + userId).then((res) => res.data)
   );
 
   if (error) return <div>Something went wrong</div>;

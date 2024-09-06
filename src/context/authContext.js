@@ -33,22 +33,22 @@ export const AuthContextProvider = ({ children }) => {
     }
   };
 
-  // Fonction pour vérifier la validité du token
-  const checkTokenValidity = async () => {
-    try {
-      const response = await verifyToken();
-      if (response.data.isValid) {
-        setIsTokenValid(true);
-      } else {
-        setIsTokenValid(false);
-        await logout();
-      }
-    } catch (error) {
-      console.error('Erreur lors de la vérification du token:', error);
-      setIsTokenValid(false);
-      await logout();
-    }
-  };
+  // // Fonction pour vérifier la validité du token
+  // const checkTokenValidity = async () => {
+  //   try {
+  //     const response = await verifyToken();
+  //     if (response.data.isValid) {
+  //       setIsTokenValid(true);
+  //     } else {
+  //       setIsTokenValid(false);
+  //       await logout();
+  //     }
+  //   } catch (error) {
+  //     console.error('Erreur lors de la vérification du token:', error);
+  //     setIsTokenValid(false);
+  //     await logout();
+  //   }
+  // };
 
   // Vérifier la validité du token lorsque le composant se monte
   // useEffect(() => {

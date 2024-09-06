@@ -19,7 +19,7 @@ const Share = () => {
       console.log("Téléchargement de l'image...");
       const formData = new FormData();
       formData.append("file", file);
-      const res = await makeRequest.post("/upload", formData);
+      const res = await makeRequest.post("api/upload", formData);
       return res.data;
     } catch (err) {
       console.error("Échec du téléchargement :", err);
@@ -29,7 +29,7 @@ const Share = () => {
   const mutation = useMutation(
     (newPost) => {
       console.log("Création du post...", newPost);
-      return makeRequest.post("/posts", newPost);
+      return makeRequest.post("api/posts", newPost);
     },
     {
       onSuccess: () => {

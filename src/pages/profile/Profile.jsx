@@ -24,14 +24,14 @@ const Profile = () => {
   const userId = parseInt(useLocation().pathname.split("/")[2]);
 
   const { isLoading, data } = useQuery(["user"], () =>
-    makeRequest.get(`/users/find/${userId}`).then((res) => res.data)
+    makeRequest.get(`api/users/find/${userId}`).then((res) => res.data)
   );
 
   const mutation = useMutation(
     (following) => {
       if (following)
-        return makeRequest.delete(`/relationships?userId=${userId}`);
-      return makeRequest.post("/relationships", { userId });
+        return makeRequest.delete(`api/relationships?userId=${userId}`);
+      return makeRequest.post("api/relationships", { userId });
     },
     {
       onSuccess: () => {
@@ -43,7 +43,7 @@ const Profile = () => {
   const { isLoading: rIsLoading, data: relationshipData } = useQuery(
     ["relationship"],
     () =>
-      makeRequest.get(`/relationships?followedUserId=${userId}`).then((res) => res.data)
+      makeRequest.get(`api/relationships?followedUserId=${userId}`).then((res) => res.data)
   );
 
   const handleFollow = () => {
@@ -58,7 +58,7 @@ const Profile = () => {
         <>
           <div className="profileHeader">
             <Avatar
-              src={data?.profilePicture ? `/upload/${data.profilePicture}` : "/default-profile.jpg"}
+              src={data?.profilePicture ? `api/upload/${data.profilePicture}` : "/default-profile.jpg"}
               alt={data?.name}
               sx={{ width: 100, height: 100, margin: "20px" }}
             />
