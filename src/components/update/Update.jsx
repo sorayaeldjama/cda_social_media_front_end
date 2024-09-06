@@ -22,7 +22,7 @@ const Update = ({ setOpenUpdate, user }) => {
     try {
       const formData = new FormData();
       formData.append("file", file);
-      const res = await makeRequest.post("/upload", formData);
+      const res = await makeRequest.post("api/upload", formData);
       return res.data;
     } catch (err) {
       console.error("Upload error:", err);
@@ -35,7 +35,7 @@ const Update = ({ setOpenUpdate, user }) => {
 
   const mutation = useMutation(
     (userData) => {
-      return makeRequest.put("/users", userData);
+      return makeRequest.put("api/users", userData);
     },
     {
       onSuccess: () => {
