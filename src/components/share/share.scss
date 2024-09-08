@@ -1,89 +1,90 @@
 .share {
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  background-color: #ffffff;
-  padding: 20px;
-  margin: 20px auto;
-  max-width: 600px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  margin-top: 50px;
+  // Définir les styles de base pour le conteneur principal
+  border: 1px solid #e0e0e0; // Bordure légère autour du composant
+  border-radius: 8px; // Bordures arrondies pour un effet visuel doux
+  background-color: #ffffff; // Fond blanc pour le conteneur
+  padding: 20px; // Espacement interne autour du contenu
+  margin: 20px auto; // Marge verticale et centrage horizontal
+  max-width: 600px; // Largeur maximale du composant
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); // Ombre légère pour un effet de profondeur
+  margin-top: 64px; // Marge supérieure pour espacer le composant du haut de la page
 
   .container {
     display: flex;
-    flex-direction: column;
+    flex-direction: column; // Aligner les éléments enfants en colonne
   }
 
   .top {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    align-items: center; // Aligner les éléments enfants au centre verticalement
+    justify-content: space-between; // Espacer les éléments enfants horizontalement
 
     .left {
       display: flex;
-      flex-direction: column;
-      flex: 1;
-      margin-right: 10px;
+      flex-direction: column; // Aligner les éléments enfants en colonne
+      flex: 1; // Permet à cet élément de prendre tout l'espace disponible
+      margin-right: 10px; // Espacement à droite du composant
 
       .profile-icon {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        background-color: #6a1b9a; // Violet Principal
-        color: #ffffff;
+        width: 50px; // Largeur de l'icône de profil
+        height: 50px; // Hauteur de l'icône de profil
+        border-radius: 50%; // Bordures arrondies pour un cercle
+        background-color: #6a1b9a; // Couleur de fond violette pour l'icône
+        color: #ffffff; // Couleur du texte en blanc
         display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 24px;
-        font-weight: bold;
-        margin-right: 10px;
+        align-items: center; // Centrer le texte verticalement
+        justify-content: center; // Centrer le texte horizontalement
+        font-size: 24px; // Taille de la police du texte
+        font-weight: bold; // Texte en gras
+        margin-right: 10px; // Espacement à droite de l'icône
       }
 
       .description-input {
-        width: 100%;
-        border: none;
-        outline: none;
-        padding: 10px;
-        border-radius: 8px;
-        background-color: #f5f5f5;
-        font-size: 16px;
+        width: 100%; // Prendre toute la largeur disponible
+        border: none; // Aucune bordure
+        outline: none; // Aucune bordure extérieure au focus
+        padding: 10px; // Espacement interne pour le texte
+        border-radius: 8px; // Bordures arrondies pour l'entrée de texte
+        background-color: #f5f5f5; // Fond gris clair pour le champ de texte
+        font-size: 16px; // Taille de la police pour le texte
       }
     }
 
     .right {
       .preview-image {
-        max-width: 200px;
-        max-height: 150px;
-        border-radius: 8px;
-        object-fit: cover;
+        max-width: 200px; // Largeur maximale de l'image de prévisualisation
+        max-height: 150px; // Hauteur maximale de l'image de prévisualisation
+        border-radius: 8px; // Bordures arrondies pour l'image
+        object-fit: cover; // Ajuste l'image pour couvrir l'espace sans déformation
       }
     }
   }
 
   .bottom {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 10px;
+    align-items: center; // Aligner les éléments enfants verticalement
+    justify-content: space-between; // Espacer les éléments enfants horizontalement
+    margin-top: 10px; // Marge supérieure pour espacer du contenu au-dessus
 
     .left {
       display: flex;
-      align-items: center;
+      align-items: center; // Aligner les éléments enfants verticalement
 
       input[type="file"] {
-        display: none;
+        display: none; // Cacher le champ de fichier
       }
 
       label {
-        cursor: pointer;
+        cursor: pointer; // Changer le curseur en pointeur pour indiquer que c'est cliquable
       }
     }
 
     .right {
       Button {
-        text-transform: none;
-        background-color: #6a1b9a; // Violet Principal
+        text-transform: none; // Pas de transformation du texte (pas de majuscules)
+        background-color: #6a1b9a; // Couleur de fond du bouton en violet principal
         &:hover {
-          background-color: #5a1a8c; // Couleur légèrement plus foncée au survol
+          background-color: #5a1a8c; // Couleur de fond légèrement plus foncée au survol
         }
       }
     }

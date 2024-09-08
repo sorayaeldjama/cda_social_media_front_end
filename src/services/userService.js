@@ -18,16 +18,20 @@ export const getUserSuggestions = async () => {
 
 // Service pour récupérer les utilisateurs suivis
 // Service pour récupérer les utilisateurs suivis
+// services/userService.js
+
 export const getFollowedUsers = async (userId) => {
-    try {
-      const response = await makeRequest.get(`api/relationships?userId=${userId}`);
-      console.log("Réponse brute de l'API pour les utilisateurs suivis :", response.data);
-      return Array.from(response.data); // Convertir en tableau
-    } catch (err) {
-      console.error('Erreur lors de la récupération des utilisateurs suivis:', err.response ? err.response.data : err.message);
-      throw new Error(err.message);
-    }
-  };
+  try {
+    const response = await makeRequest.get(`api/relationships?userId=${userId}`);
+    console.log("Réponse brute de l'API pour les utilisateurs suivis :", response.data);
+    return Array.isArray(response.data) ? response.data : [];
+  } catch (err) {
+    console.error('Erreur lors de la récupération des utilisateurs suivis:', err.response ? err.response.data : err.message);
+    throw new Error(err.message);
+  }
+};
+
+
   
 // Service pour suivre un utilisateur
 export const followUser = async (userId) => {

@@ -1,194 +1,197 @@
 .login {
-  height: 100vh;
-  background-color: #6464b2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  height: 100vh; // La hauteur de l'écran de connexion occupe toute la hauteur de la fenêtre
+  background-color: #6464b2; // Couleur de fond pour la page de connexion
+  display: flex; // Utilisation de Flexbox pour centrer le contenu
+  align-items: center; // Centrage vertical du contenu
+  justify-content: center; // Centrage horizontal du contenu
 
   .card {
     width: 90%; /* Ajuste la largeur pour les petits écrans */
-    max-width: 1200px; /* Limite la largeur maximale */
-    display: flex;
-    flex-direction: row; /* Pour les écrans larges */
-    background-color: white;
-    border-radius: 10px;
-    min-height: 600px;
-    overflow: hidden;
+    max-width: 1200px; /* Limite la largeur maximale de la carte */
+    display: flex; // Utilisation de Flexbox pour organiser les sections gauche et droite
+    flex-direction: row; /* Disposition en ligne pour les écrans larges */
+    background-color: white; // Couleur de fond de la carte
+    border-radius: 10px; // Coins arrondis pour la carte
+    min-height: 600px; // Hauteur minimale pour la carte
+    overflow: hidden; // Cache tout débordement de contenu
 
     .left {
-      flex: 1;
-      background: linear-gradient(rgba(39, 11, 96, 0.5), rgba(39, 11, 96, 0.5)),
-      url("https://images.pexels.com/photos/2422286/pexels-photo-2422286.jpeg?auto=compress&cs=tinysrgb&w=1600") center;
-      background-size: cover;
-      padding: 50px;
-      display: flex;
-      flex-direction: column;
-      gap: 30px;
-      color: white;
+      flex: 1; // Prend la moitié de l'espace disponible
+      background: linear-gradient(rgba(39, 11, 96, 0.5), rgba(39, 11, 96, 0.5)), // Dégradé semi-transparent
+        url("https://images.pexels.com/photos/2422286/pexels-photo-2422286.jpeg?auto=compress&cs=tinysrgb&w=1600") center; // Image d'arrière-plan
+      background-size: cover; // Couvre toute la zone sans déformation
+      padding: 50px; // Espacement interne
+      display: flex; // Utilisation de Flexbox pour disposition des éléments
+      flex-direction: column; // Disposition en colonne
+      gap: 30px; // Espace entre les éléments enfants
+      color: white; // Couleur du texte
 
       h1 {
-        font-size: 4rem; /* Taille de police plus petite pour les écrans plus petits */
-        line-height: 1.2;
+        font-size: 4rem; // Taille de police plus petite pour les écrans plus petits
+        line-height: 1.2; // Hauteur de ligne pour améliorer la lisibilité
       }
 
       span {
-        font-size: 1rem;
+        font-size: 1rem; // Taille de police pour le texte secondaire
       }
 
       button {
-        width: 50%;
-        padding: 10px;
-        border: none;
-        background-color: white;
-        color: rgb(146, 189, 103);
-        font-weight: bold;
-        cursor: pointer;
+        width: 50%; // Largeur du bouton
+        padding: 10px; // Espacement interne du bouton
+        border: none; // Suppression des bordures
+        background-color: white; // Couleur de fond du bouton
+        color: rgb(146, 189, 103); // Couleur du texte du bouton
+        font-weight: bold; // Gras pour le texte du bouton
+        cursor: pointer; // Curseur en forme de main pour indiquer que c'est cliquable
       }
     }
 
     .right {
-      flex: 1;
-      padding: 50px;
-      display: flex;
-      flex-direction: column;
-      gap: 30px;
-      justify-content: center;
+      flex: 1; // Prend la moitié de l'espace disponible
+      padding: 50px; // Espacement interne
+      display: flex; // Utilisation de Flexbox pour disposition des éléments
+      flex-direction: column; // Disposition en colonne
+      gap: 30px; // Espace entre les éléments enfants
+      justify-content: center; // Centrage vertical du contenu
 
       h1 {
-        color: #555;
+        color: #555; // Couleur du texte du titre
       }
 
       form {
-        display: flex;
-        flex-direction: column;
-        gap: 30px;
+        display: flex; // Utilisation de Flexbox pour disposition des éléments de formulaire
+        flex-direction: column; // Disposition en colonne
+        gap: 30px; // Espace entre les éléments de formulaire
 
         .input-container {
-          position: relative;
-          margin-bottom: 20px;
+          position: relative; // Nécessaire pour positionner les messages d'erreur
+          margin-bottom: 20px; // Espace sous chaque champ de saisie
 
           input {
-            border: 1px solid lightgray;
-            padding: 10px;
-            width: 100%;
-            border-radius: 5px;
+            border: 1px solid lightgray; // Bordure grise claire pour les champs de saisie
+            padding: 10px; // Espacement interne du champ de saisie
+            width: 100%; // Largeur complète du champ de saisie
+            border-radius: 5px; // Coins arrondis pour les champs de saisie
           }
 
           &.error input {
-            border-color: red;
+            border-color: red; // Bordure rouge pour les champs avec erreur
           }
 
           .error-message {
-            color: red;
-            font-size: 0.875rem;
-            position: absolute;
-            bottom: -20px;
-            left: 0;
-            width: 100%;
-            margin-top: 5px;
+            color: red; // Couleur du texte du message d'erreur
+            font-size: 0.875rem; // Taille de police pour le message d'erreur
+            position: absolute; // Position absolue pour placer le message d'erreur sous le champ
+            bottom: -20px; // Positionnement du message d'erreur sous le champ
+            left: 0; // Alignement à gauche
+            width: 100%; // Largeur complète pour le message d'erreur
+            margin-top: 5px; // Espace au-dessus du message d'erreur
           }
         }
 
         button {
-          width: 50%;
-          padding: 10px;
-          border: none;
-          background-color: rgb(146, 189, 103);
-          color: white;
-          font-weight: bold;
-          cursor: pointer;
+          width: 50%; // Largeur du bouton
+          padding: 10px; // Espacement interne du bouton
+          border: none; // Suppression des bordures
+          background-color: rgb(146, 189, 103); // Couleur de fond du bouton
+          color: white; // Couleur du texte du bouton
+          font-weight: bold; // Gras pour le texte du bouton
+          cursor: pointer; // Curseur en forme de main pour indiquer que c'est cliquable
         }
       }
     }
   }
 
+  // Styles pour les écrans de largeur maximale de 1024px
   @media (max-width: 1024px) {
     .card {
-      flex-direction: column; /* Colonne pour les écrans intermédiaires */
-      width: 90%;
+      flex-direction: column; // Disposition en colonne pour les écrans intermédiaires
+      width: 90%; // Ajuste la largeur pour les écrans intermédiaires
     }
 
     .left, .right {
-      padding: 30px;
+      padding: 30px; // Réduit l'espacement interne pour les petits écrans
     }
     
     .left {
       h1 {
-        font-size: 3rem;
+        font-size: 3rem; // Réduit la taille de la police du titre
       }
 
       button {
-        width: 70%;
+        width: 70%; // Ajuste la largeur du bouton
       }
     }
 
     .right {
       form {
-        gap: 20px;
+        gap: 20px; // Réduit l'espace entre les éléments de formulaire
 
         .input-container {
-          margin-bottom: 15px;
+          margin-bottom: 15px; // Réduit l'espace sous chaque champ de saisie
         }
         
         button {
-          width: 70%;
+          width: 70%; // Ajuste la largeur du bouton
         }
       }
     }
   }
 
+  // Styles pour les écrans de largeur maximale de 768px
   @media (max-width: 768px) {
     .card {
-      flex-direction: column; /* Colonne pour les petits écrans */
-      width: 95%;
+      flex-direction: column; // Disposition en colonne pour les petits écrans
+      width: 95%; // Ajuste la largeur pour les petits écrans
     }
 
     .left {
       h1 {
-        font-size: 2.5rem;
+        font-size: 2.5rem; // Réduit la taille de la police du titre
       }
 
       span {
-        font-size: 0.875rem;
+        font-size: 0.875rem; // Réduit la taille de la police pour le texte secondaire
       }
     }
 
     .right {
       form {
-        gap: 15px;
+        gap: 15px; // Réduit l'espace entre les éléments de formulaire
 
         .input-container {
-          margin-bottom: 10px;
+          margin-bottom: 10px; // Réduit l'espace sous chaque champ de saisie
         }
 
         button {
-          width: 80%;
+          width: 80%; // Ajuste la largeur du bouton
         }
       }
     }
   }
 
+  // Styles pour les écrans de largeur maximale de 480px
   @media (max-width: 480px) {
     .left {
       h1 {
-        font-size: 2rem;
+        font-size: 2rem; // Réduit encore la taille de la police du titre
       }
 
       button {
-        width: 80%;
+        width: 80%; // Ajuste la largeur du bouton
       }
     }
 
     .right {
       form {
-        gap: 10px;
+        gap: 10px; // Réduit l'espace entre les éléments de formulaire
 
         .input-container {
-          margin-bottom: 10px;
+          margin-bottom: 10px; // Réduit l'espace sous chaque champ de saisie
         }
 
         button {
-          width: 90%;
+          width: 90%; // Ajuste la largeur du bouton
         }
       }
     }

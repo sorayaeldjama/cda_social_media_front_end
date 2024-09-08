@@ -33,15 +33,20 @@ import "./post.scss";
 import { DarkModeContext } from "../../context/darkModeContext.js";
 
 const Post = ({ post }) => {
+  // Contexte pour le mode sombre
   const { darkMode } = useContext(DarkModeContext);
+  
+  // États locaux pour gérer l'ouverture des commentaires, du menu et du dialogue de confirmation
   const [commentOpen, setCommentOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const menuRef = useRef(null);
 
+  // Contexte pour obtenir l'utilisateur actuellement connecté
   const { currentUser } = useContext(AuthContext);
   const queryClient = useQueryClient();
 
+  // Requête pour obtenir les likes du post
   const { isLoading, data } = useQuery(["likes", post.id], () =>
     getLikes(post.id),
     {
@@ -49,34 +54,42 @@ const Post = ({ post }) => {
     }
   );
 
+  // Vérifie si l'utilisateur actuel a aimé le post
   const isLiked = data && data.includes(currentUser.id);
 
+  // Mutation pour liker ou disliker le post
   const mutation = useMutation(
     () => toggleLike(post.id, currentUser.id, isLiked),
     {
       onSuccess: () => {
+        // Invalide le cache des likes pour refléter les changements
         queryClient.invalidateQueries(["likes", post.id]);
       },
     }
   );
 
+  // Mutation pour supprimer le post
   const deleteMutation = useMutation(
     () => deletePost(post.id),
     {
       onSuccess: () => {
+        // Invalide le cache des posts pour refléter les changements
         queryClient.invalidateQueries(["posts"]);
       },
     }
   );
 
+  // Fonction pour gérer le clic sur le bouton de like
   const handleLike = () => {
     mutation.mutate();
   };
 
+  // Fonction pour ouvrir le dialogue de confirmation de suppression
   const handleDelete = () => {
     setDialogOpen(true);
   };
 
+  // Fonction pour fermer le dialogue de confirmation
   const handleCloseDialog = (confirm) => {
     setDialogOpen(false);
     if (confirm) {
@@ -85,9 +98,7 @@ const Post = ({ post }) => {
   };
 
   useEffect(() => {
-    console.log("Post Data in Post:", post);
-    console.log("Profile Picture URL in Post:", post.profilePicture);
-
+    // Fonction pour fermer le menu lorsqu'on clique en dehors
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setMenuOpen(false);
@@ -100,6 +111,7 @@ const Post = ({ post }) => {
     };
   }, [post]);
 
+  // Lettre de l'avatar si l'image de profil n'est pas disponible
   const avatarLetter = post.name ? post.name.charAt(0).toUpperCase() : "";
 
   return (
@@ -133,6 +145,7 @@ const Post = ({ post }) => {
               onClose={() => setMenuOpen(false)}
               PaperProps={{ style: { width: '150px' } }}
             >
+              {/* Affiche l'option de suppression uniquement si le post appartient à l'utilisateur actuel */}
               {post.userId === currentUser.id && (
                 <MenuItem onClick={handleDelete}>Supprimer</MenuItem>
               )}
@@ -154,7 +167,7 @@ const Post = ({ post }) => {
             color={isLiked ? 'error' : 'default'}
           >
             {isLoading ? (
-              "Loading..."
+              "Chargement..."
             ) : isLiked ? (
               <Favorite />
             ) : (
@@ -176,10 +189,10 @@ const Post = ({ post }) => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"Confirm Deletion"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{"Confirmer la suppression"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Are you sure you want to delete this post? This action cannot be undone.
+            Êtes-vous sûr de vouloir supprimer ce post ? Cette action est irréversible.
           </DialogContentText>
         </DialogContent>
         <DialogActions>

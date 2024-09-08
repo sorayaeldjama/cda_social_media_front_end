@@ -3,11 +3,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { makeRequest } from '../../axios';
 import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, IconButton, Input } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import './update.scss'; // Assurez-vous que le fichier CSS est importé
 
 const Update = ({ setOpenUpdate, user }) => {
   const queryClient = useQueryClient();
   const [profile, setProfile] = useState(null);
-  const [cover, setCover] = useState(null);
   const [texts, setTexts] = useState({
     name: user.name || "",
     city: user.city || "",
@@ -15,7 +15,7 @@ const Update = ({ setOpenUpdate, user }) => {
   });
 
   useEffect(() => {
-    console.log("Update component mounted");
+    console.log("Composant Update monté");
   }, []);
 
   const upload = async (file) => {
@@ -25,7 +25,7 @@ const Update = ({ setOpenUpdate, user }) => {
       const res = await makeRequest.post("api/upload", formData);
       return res.data;
     } catch (err) {
-      console.error("Upload error:", err);
+      console.error("Erreur lors du téléchargement :", err);
     }
   };
 
@@ -46,19 +46,14 @@ const Update = ({ setOpenUpdate, user }) => {
 
   const handleClick = async (e) => {
     e.preventDefault();
-    let coverUrl = user.coverPicture;
     let profileUrl = user.profilePicture;
 
-    if (cover) {
-      coverUrl = await upload(cover);
-    }
     if (profile) {
       profileUrl = await upload(profile);
     }
 
     mutation.mutate({
       ...texts,
-      coverPicture: coverUrl,
       profilePicture: profileUrl,
     });
 
@@ -68,7 +63,7 @@ const Update = ({ setOpenUpdate, user }) => {
   return (
     <Dialog open onClose={() => setOpenUpdate(false)} maxWidth="sm" fullWidth>
       <DialogTitle>
-        Update Profile
+        Mettre à jour le profil
         <IconButton
           edge="end"
           color="inherit"
@@ -80,53 +75,54 @@ const Update = ({ setOpenUpdate, user }) => {
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        <form>
-          <Input
-            type="file"
-            onChange={(e) => setCover(e.target.files[0])}
-            inputProps={{ accept: 'image/*' }}
-            fullWidth
-            sx={{ mb: 2 }}
-          />
-          <Input
-            type="file"
-            onChange={(e) => setProfile(e.target.files[0])}
-            inputProps={{ accept: 'image/*' }}
-            fullWidth
-            sx={{ mb: 2 }}
-          />
-          <TextField
-            margin="normal"
-            fullWidth
-            label="Name"
-            name="name"
-            value={texts.name}
-            onChange={handleChange}
-          />
-          <TextField
-            margin="normal"
-            fullWidth
-            label="City"
-            name="city"
-            value={texts.city}
-            onChange={handleChange}
-          />
-          <TextField
-            margin="normal"
-            fullWidth
-            label="Website"
-            name="website"
-            value={texts.website}
-            onChange={handleChange}
-          />
-        </form>
+        {/* Conteneur du formulaire avec une classe pour la personnalisation du défilement */}
+        <div className="custom-scroll">
+          <form>
+            {/* Champ pour télécharger la photo de profil */}
+            <Input
+              type="file"
+              onChange={(e) => setProfile(e.target.files[0])}
+              inputProps={{ accept: 'image/*' }}
+              fullWidth
+              sx={{ mb: 2 }}
+              placeholder="Sélectionner une nouvelle image de profil"
+            />
+            {/* Champs de texte pour la mise à jour des informations utilisateur */}
+            <TextField
+              margin="normal"
+              fullWidth
+              label="Nom"
+              name="name"
+              value={texts.name}
+              onChange={handleChange}
+            />
+            <TextField
+              margin="normal"
+              fullWidth
+              label="Ville"
+              name="city"
+              value={texts.city}
+              onChange={handleChange}
+            />
+            <TextField
+              margin="normal"
+              fullWidth
+              label="Site Web"
+              name="website"
+              value={texts.website}
+              onChange={handleChange}
+            />
+          </form>
+        </div>
       </DialogContent>
       <DialogActions>
+        {/* Bouton pour confirmer la mise à jour */}
         <Button onClick={handleClick} variant="contained" color="primary">
-          Update
+          Mettre à jour
         </Button>
+        {/* Bouton pour annuler la mise à jour */}
         <Button onClick={() => setOpenUpdate(false)} color="secondary">
-          Cancel
+          Annuler
         </Button>
       </DialogActions>
     </Dialog>

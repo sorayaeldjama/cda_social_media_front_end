@@ -1,5 +1,5 @@
+/* Importer le fichier de style global */
 @import "../../style.scss";
-
 
 .update {
   position: absolute;
@@ -12,4 +12,33 @@
   padding: 50px;
   z-index: 999;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  /* Ajouter une barre de défilement si le contenu dépasse */
+  overflow-y: auto;
+}
+
+/* Personnalisation de la barre de défilement */
+.update .custom-scroll {
+  max-height: 100%; /* Assure que la barre de défilement utilise toute la hauteur disponible */
+  overflow-y: auto;
+}
+
+.update .custom-scroll::-webkit-scrollbar {
+  width: 12px; /* Largeur de la barre de défilement */
+}
+
+.update .custom-scroll::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Couleur de la piste de défilement */
+}
+
+.update .custom-scroll::-webkit-scrollbar-thumb {
+  background: #888; /* Couleur de la barre de défilement */
+  border-radius: 10px; /* Bordure arrondie pour la barre de défilement */
+}
+
+.update .custom-scroll::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Couleur au survol de la barre de défilement */
+}
+
+input[type="file"] {
+  margin-bottom: 16px;
 }
