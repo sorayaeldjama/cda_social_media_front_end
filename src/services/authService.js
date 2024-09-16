@@ -1,5 +1,5 @@
 // src/services/authService.js
-import { makeRequest } from "../../src/axios";
+import { makeRequest } from "../../src/axios.js";
 
 // Fonction pour gérer la connexion de l'utilisateur
 export const login = async (credentials) => {
